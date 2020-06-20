@@ -43,19 +43,9 @@ if(gRPC_ZLIB_PROVIDER STREQUAL "module")
     set(gRPC_INSTALL FALSE)
   endif()
 elseif(gRPC_ZLIB_PROVIDER STREQUAL "package")
-  # zlib installation directory can be configured by setting ZLIB_ROOT
-  # We allow locating zlib using both "CONFIG" and "MODULE" as the expectation
-  # is that many Linux systems will have zlib installed via a distribution
-  # package ("MODULE"), while on Windows the user is likely to have installed
-  # zlib using cmake ("CONFIG").
-  # See https://cmake.org/cmake/help/v3.6/module/FindZLIB.html
-  find_package(ZLIB REQUIRED)
-
-  if(TARGET ZLIB::ZLIB)
-    set(_gRPC_ZLIB_LIBRARIES ZLIB::ZLIB)
-  else()
-    set(_gRPC_ZLIB_LIBRARIES ${ZLIB_LIBRARIES})
-  endif()
+  hunter_add_package(ZLIB)
+  find_package(ZLIB CONFIG REQUIRED)
+  set(_gRPC_ZLIB_LIBRARIES ZLIB::zlib)
   set(_gRPC_ZLIB_INCLUDE_DIR ${ZLIB_INCLUDE_DIRS})
   set(_gRPC_FIND_ZLIB "if(NOT ZLIB_FOUND)\n  find_package(ZLIB)\nendif()")
 endif()

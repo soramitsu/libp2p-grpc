@@ -24,6 +24,13 @@
 
 cmake_minimum_required(VERSION 3.5.1)
 
+include(cmake/HunterGate.cmake)
+HunterGate(
+  URL "https://github.com/ruslo/hunter/archive/v0.23.80.tar.gz"
+  SHA1 "3bfa8be33ac3bdac570312ca1ece33059cc71c20"
+  LOCAL
+)
+
 set(PACKAGE_NAME          "grpc")
 set(PACKAGE_VERSION       "1.31.0-dev")
 set(gRPC_CORE_VERSION     "11.0.0")
@@ -37,11 +44,11 @@ set(PACKAGE_TARNAME       "${PACKAGE_NAME}-${PACKAGE_VERSION}")
 set(PACKAGE_BUGREPORT     "https://github.com/grpc/grpc/issues/")
 project(${PACKAGE_NAME} LANGUAGES C CXX)
 
-set(gRPC_INSTALL_BINDIR "bin" CACHE STRING "Installation directory for executables")
-set(gRPC_INSTALL_LIBDIR "lib" CACHE STRING "Installation directory for libraries")
-set(gRPC_INSTALL_INCLUDEDIR "include" CACHE STRING "Installation directory for headers")
-set(gRPC_INSTALL_CMAKEDIR "lib/cmake/${PACKAGE_NAME}" CACHE STRING "Installation directory for cmake config files")
-set(gRPC_INSTALL_SHAREDIR "share/grpc" CACHE STRING "Installation directory for root certificates")
+set(gRPC_INSTALL_BINDIR "bin" CACHE PATH "Installation directory for executables")
+set(gRPC_INSTALL_LIBDIR "lib" CACHE PATH "Installation directory for libraries")
+set(gRPC_INSTALL_INCLUDEDIR "include" CACHE PATH "Installation directory for headers")
+set(gRPC_INSTALL_CMAKEDIR "lib/cmake/${PACKAGE_NAME}" CACHE PATH "Installation directory for cmake config files")
+set(gRPC_INSTALL_SHAREDIR "share/grpc" CACHE PATH "Installation directory for root certificates")
 
 # Options
 option(gRPC_BUILD_TESTS "Build tests" OFF)
@@ -69,33 +76,33 @@ endif()
 # "module": build the dependency using sources from git submodule (under third_party)
 # "package": use cmake's find_package functionality to locate a pre-installed dependency
 
-set(gRPC_ZLIB_PROVIDER "module" CACHE STRING "Provider of zlib library")
+set(gRPC_ZLIB_PROVIDER "package" CACHE STRING "Provider of zlib library")
 set_property(CACHE gRPC_ZLIB_PROVIDER PROPERTY STRINGS "module" "package")
 
-set(gRPC_CARES_PROVIDER "module" CACHE STRING "Provider of c-ares library")
+set(gRPC_CARES_PROVIDER "package" CACHE STRING "Provider of c-ares library")
 set_property(CACHE gRPC_CARES_PROVIDER PROPERTY STRINGS "module" "package")
 
-set(gRPC_SSL_PROVIDER "module" CACHE STRING "Provider of ssl library")
+set(gRPC_SSL_PROVIDER "package" CACHE STRING "Provider of ssl library")
 set_property(CACHE gRPC_SSL_PROVIDER PROPERTY STRINGS "module" "package")
 
-set(gRPC_PROTOBUF_PROVIDER "module" CACHE STRING "Provider of protobuf library")
+set(gRPC_PROTOBUF_PROVIDER "package" CACHE STRING "Provider of protobuf library")
 set_property(CACHE gRPC_PROTOBUF_PROVIDER PROPERTY STRINGS "module" "package")
 
-set(gRPC_PROTOBUF_PACKAGE_TYPE "" CACHE STRING "Algorithm for searching protobuf package")
+set(gRPC_PROTOBUF_PACKAGE_TYPE "CONFIG" CACHE STRING "Algorithm for searching protobuf package")
 set_property(CACHE gRPC_PROTOBUF_PACKAGE_TYPE PROPERTY STRINGS "CONFIG" "MODULE")
 
 if(gRPC_BUILD_TESTS)
-  set(gRPC_GFLAGS_PROVIDER "module" CACHE STRING "Provider of gflags library")
+  set(gRPC_GFLAGS_PROVIDER "package" CACHE STRING "Provider of gflags library")
   set_property(CACHE gRPC_GFLAGS_PROVIDER PROPERTY STRINGS "module" "package")
 
-  set(gRPC_BENCHMARK_PROVIDER "module" CACHE STRING "Provider of benchmark library")
+  set(gRPC_BENCHMARK_PROVIDER "package" CACHE STRING "Provider of benchmark library")
   set_property(CACHE gRPC_BENCHMARK_PROVIDER PROPERTY STRINGS "module" "package")
 else()
   set(gRPC_GFLAGS_PROVIDER "none")
   set(gRPC_BENCHMARK_PROVIDER "none")
 endif()
 
-set(gRPC_ABSL_PROVIDER "module" CACHE STRING "Provider of absl library")
+set(gRPC_ABSL_PROVIDER "package" CACHE STRING "Provider of absl library")
 set_property(CACHE gRPC_ABSL_PROVIDER PROPERTY STRINGS "module" "package")
 
 set(gRPC_ABSL_USED_TARGETS
