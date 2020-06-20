@@ -22,7 +22,7 @@ cdef class Call:
     self.references = []
 
   def _start_batch(self, operations, tag, retain_self):
-    if not self.is_valid:
+    if self.c_call == NULL:
       raise ValueError("invalid call object cannot be used from Python")
     cdef _BatchOperationTag batch_operation_tag = _BatchOperationTag(
         tag, operations, self if retain_self else None)
@@ -47,7 +47,7 @@ cdef class Call:
       self, grpc_status_code error_code=GRPC_STATUS__DO_NOT_USE,
       details=None):
     details = str_to_bytes(details)
-    if not self.is_valid:
+    if self.c_call == NULL:
       raise ValueError("invalid call object cannot be used from Python")
     if (details is None) != (error_code == GRPC_STATUS__DO_NOT_USE):
       raise ValueError("if error_code is specified, so must details "
@@ -81,6 +81,11 @@ cdef class Call:
     with nogil:
       gpr_free(peer)
     return result
+
+  def close(self):
+    if self.c_call != NULL:
+      grpc_call_unref(self.c_call)
+      self.c_call = NULL
 
   def __dealloc__(self):
     with nogil:

@@ -55,8 +55,8 @@ if(gRPC_PROTOBUF_PROVIDER STREQUAL "module")
     set(gRPC_INSTALL FALSE)
   endif()
 elseif(gRPC_PROTOBUF_PROVIDER STREQUAL "package")
-  find_package(Protobuf REQUIRED ${gRPC_PROTOBUF_PACKAGE_TYPE})
-
+  hunter_add_package(Protobuf)
+  find_package(Protobuf ${gRPC_PROTOBUF_PACKAGE_TYPE} REQUIRED)
   # {Protobuf,PROTOBUF}_FOUND is defined based on find_package type ("MODULE" vs "CONFIG").
   # For "MODULE", the case has also changed between cmake 3.5 and 3.6.
   # We use the legacy uppercase version for *_LIBRARIES AND *_INCLUDE_DIRS variables
