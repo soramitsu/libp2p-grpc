@@ -26,8 +26,8 @@ cmake_minimum_required(VERSION 3.5.1)
 
 include(cmake/HunterGate.cmake)
 HunterGate(
-  URL "https://github.com/soramitsu/soramitsu-hunter/archive/a1fee641062ef26f0703f886eecdb1f2d6d63b64.tar.gz"
-  SHA1 858daf4ddb97f9da62387cf57eacc35343663c4d
+  URL "https://github.com/soramitsu/soramitsu-hunter/archive/v0.23.255-soramitsu1.tar.gz"
+  SHA1 64bcff507af569851198a8d27d1e9fd70536d9a7
   LOCAL
 )
 
